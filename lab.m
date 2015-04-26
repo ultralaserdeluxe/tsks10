@@ -42,16 +42,19 @@ pause;
 
 % y3 (114 kHz) seems to be the right one
 
-% Cross-correlation to find echo time delay
-[corr, lags] = xcorr(y3, y3);
+% Cross-correlation of white noise (y2) to find echo time delay
+[corr, lags] = xcorr(y2);
+corr = corr(lags > 0); % Plot only positive time
+lags = lags(lags > 0);
 subplot(1,1,1);
-plot(lags, corr);
-xlabel('samples');
+plot(lags/fs, corr);
+xlabel('time (s)');
 title('Cross correlation');
 pause;
 
-diff = 172200; % Difference in samples from xcorr plot
-tau = diff * (1/fs); % Difference in seconds
+tau = 0.43; % Difference in seconds from xcorr plot
+diff = tau*fs; % Difference in samples 
+
 
 % Echo cancellation
 y_echo_fix = zeros(size(y3));
