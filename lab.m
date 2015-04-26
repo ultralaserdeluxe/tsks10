@@ -55,7 +55,6 @@ pause;
 tau = 0.43; % Difference in seconds from xcorr plot
 diff = tau*fs; % Difference in samples 
 
-
 % Echo cancellation
 y_echo_fix = zeros(size(y3));
 y_echo_fix(1:diff) = y3(1:diff);
@@ -67,8 +66,11 @@ end
 % I/Q-demodulation
 [B, A] = butter(10, bw/(fs/2), 'low');
 
-y_i = filter(B, A, 2*y_echo_fix.*cos(2*pi*fc3*t_axis));
-y_q = -filter(B, A, 2*y_echo_fix.*sin(2*pi*fc3*t_axis));
+i_carrier = cos(2*pi*fc3*t_axis);
+q_carrier = sin(2*pi*fc3*t_axis);
+
+y_i = filter(B, A, 2*y_echo_fix.*i_carrier);
+y_q = -filter(B, A, 2*y_echo_fix.*q_carrier);
 
 % Playback
 i = decimate(y_i, 4);
