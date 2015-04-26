@@ -1,1 +1,6 @@
+# Emacs
 *~
+
+# TeX
+*.aux
+*.log
