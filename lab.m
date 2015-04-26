@@ -64,6 +64,8 @@ for i=1:42
     y_echo_fix((i+1)*diff+1:(i+2)*diff) = y_echo - 0.9*y_no_echo;
 end
 
+y_echo_fix = y3;
+
 % I/Q-demodulation
 [B, A] = butter(10, bw/(fs/2), 'low');
 
