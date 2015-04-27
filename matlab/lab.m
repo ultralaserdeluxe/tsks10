@@ -76,5 +76,5 @@ y_q = -filter(B, A, 2*y_echo_fix.*q_carrier);
 i = decimate(y_i, 4);
 q = decimate(y_q, 4);
 
-soundsc(i, fs/4);
+%soundsc(i, fs/4);
 %soundsc(q, fs/4);
