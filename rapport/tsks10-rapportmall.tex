@@ -1,50 +1,59 @@
 \documentclass[10pt,twocolumn]{article}
 
+\usepackage[swedish]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{times}
 \usepackage{mathptmx}  
-\usepackage{spverbatim}
+\usepackage{pdfpages}
+\usepackage{mcode}
+\usepackage{appendix}
 
 \raggedbottom
 \sloppy
 
 \title{Laborationsrapport i TSKS10 \emph{Signaler, Information och Kommunikation}}
 
-\author{F\"ornamn Efternamn \\ LiU-ID, personnummer }
+\author{Alexander Yngve\\aleyn573, 930320-6651}
 
-\date{xxx mars, 2015}
+\date{28 april, 2015}
 
 \begin{document}
 
+% Försättsblad
+\begin{figure}
+  \includepdf{tsks10-forsattsblad.pdf}
+\end{figure}
+
+% Framsida
 \maketitle
 
+\clearpage
+
+% Brödtext
 \section{Inledning}
 
-Denna laboration gick ut p\aa\ att...
+Denna laboration gick ut på att...
 
 \section{Metod}
 
-Uppgiften l\"ostes p\aa\ f\"oljande s\"att...
+Uppgiften löstes på följande sätt...
 
 \section{Resultat}
 
-Den s\"okta informationen \"ar:
+Den sökta informationen är:
 \begin{itemize}
-\item B\"arfrekvensen f\"or nyttosignalen \"ar $f_c=...$
-\item ...
+\item Bärfrekvensen för nyttosignalen är $f_c = 114000$ Hz.
+\item Differensen $\tau_{2} - \tau_{1} = 0.430$ s.
+\item Ordspråket i I-signalen är ``även den mest skröpliga mussla kan innehålla en pärla''.
+\item Ordspråket i Q-signalen är ``skrattar bäst som skrattar sist''.
 \end{itemize}
 
 \clearpage
 
-\section*{Min Matlab-kod:}
-\begin{spverbatim}
-clear all
-close all
-
-for k=1:...
-  ...
-end
-
-plot(...,...)
-\end{spverbatim}
+% Programkod
+\begin{appendices}
+\section{Programkod}
+\lstinputlisting[breaklines=true]{../matlab/lab.m}
+\end{appendices}
 
 \end{document}
