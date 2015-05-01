@@ -11,6 +11,8 @@
 \raggedbottom
 \sloppy
 
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{#1}}}
+
 \title{Laborationsrapport i TSKS10 \emph{Signaler, Information och Kommunikation}}
 
 \author{Alexander Yngve\\aleyn573, 930320-6651}
@@ -32,15 +34,37 @@
 % Brödtext
 \section{Inledning}
 
-Denna laboration gick ut på att...
+Målet med den här laborationen var att demodulera en smalbandig I/Q-modulerad signal skickad från en tänkt radiostation och lyssna på dess innehåll. Signalens innehåll består av musikaliska melodier, ordspråk och vitt brus. En del av uppgiften var att identifiera ordspråken. Förutom demodulering skulle även signalens bärfrekvens bestämmas samt ekoeffekter tas hänsyn till. Resultatet av laborationen blev kända värden på signalens bärfrekvens, ekotidsfördröjning samt en användbar signal där ordspråken kunde höras.
+
+Från labbhandledningen fås följande information om signalen:
+
+\begin{itemize}
+\item Radiostationen sänder ut signalen $x(t) = x_I(t)cos(2\pi f_ct) - x_Q(t)cos(2\pi f_ct) + z(t)$, där $f_c$ är signalens bärfrekvens och $z(t)$ är andra signaler ämnade åt någon annan. $x_I$ och $x_Q$ är de intressanta signalerna med relevant innehåll.
+\item På grund av ekoeffekter i radioutbredningsmiljön så tar vi emot signalen $y(t) = x(t - \tau_1) + 0.9x(t - \tau_2)$. 
+\item Bärfrekvensen $f_c$ är en multipel av 19 kHz.
+\end{itemize}
 
 \section{Metod}
 
-Uppgiften löstes på följande sätt...
+Laborationen kan delas in i tre deluppgifter, bestämming av bärfrekvens samt filtrering i smalbandet, bestämning av ekots tidsfördröjning samt filtrering av detta och slutligen I/Q-demodulering. MATLAB användes som verktyg för att behandla signalen.
+
+\subsection{Bärfrekvens och filtrering}
+För att bestämma bärfrekvensen $f_c$ görs en fouriertransform. 
+\todo{Figurer på fft och filtrerade signaler} \\
+\todo{Beskriv hur rätt signal valdes} \\
+
+\subsection{Hantering av eko}
+\todo{xcorr och beskrivning av algoritm för att ta bort ekot} \\
+\todo{Figurer på xcorr plotten} \\
+
+\subsection{I/Q-demodulering}
+\todo{Motivera bandbreddsval} \\
+\todo{Ekvationer för I/Q} \\
 
 \section{Resultat}
 
 Den sökta informationen är:
+
 \begin{itemize}
 \item Bärfrekvensen för nyttosignalen är $f_c = 114000$ Hz.
 \item Differensen $\tau_{2} - \tau_{1} = 0.430$ s.
