@@ -1,7 +1,7 @@
 BUILDDIR = build
 OUTDIR = pdf
 TEXDIR = rapport
-TEXFILE = tsks10-rapportmall.tex
+TEXFILE = rapport.tex
 PDFFILE = $(addsuffix .pdf,$(basename $(TEXFILE)))
 
 $(TEXDIR)/$(OUTDIR)/$(PDFFILE): $(TEXDIR)/$(TEXFILE)
