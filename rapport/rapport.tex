@@ -49,16 +49,28 @@ Från labbhandledningen fås följande information om signalen:
 Laborationen kan delas in i tre deluppgifter, bestämming av bärfrekvens samt filtrering i smalbandet, bestämning av ekots tidsfördröjning samt filtrering av detta och slutligen I/Q-demodulering. MATLAB användes som verktyg för att behandla signalen.
 
 \subsection{Bärfrekvens och filtrering}
-För att bestämma bärfrekvensen $f_c$ görs en fouriertransform. 
+Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen $y(t)$. Figur \todo{ref amplitudspektrum} visar amplitudspektrumet $|Y(f)|$. Ur figuren fås att det finns innehåll i närheten av tre olika bärfrekvenser. De frekvenser som matchar kritieriet att vara en multipel av 19 kHz är våra möjliga bärfrekvenser.
+
+\begin{itemize}
+\item Signal $y_1$ med $f_{c1}=38$ kHz
+\item Signal $y_2$ med $f_{c2}=76$ kHz
+\item Signal $y_3$ med $f_{c3}=114$ kHz
+\end{itemize}
+
+Signalerna på de olika frekvenserna filtreras ut med hjälp av ett bandpassfilter med övre respektive undre gräns $f_{ci} - B/2$ och $f_{ci} + B/2$ där $i = 1,2,3$. Då vi vet att signalen ska innehålla hörbart ljud väljs bandbredden $B=20000$ Hz.
+
+Figure \todo{ref tiddomän} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
+
 \todo{Figurer på fft och filtrerade signaler} \\
 \todo{Beskriv hur rätt signal valdes} \\
 
 \subsection{Hantering av eko}
+För att få bort ekoeffekterna i signalen måste vi först veta ekots tidsfördröjning. Detta görs genom en autokorrelation på signalen. För att få ett tydligare resulatat används $y_2$ som bara innehåller brus
+
 \todo{xcorr och beskrivning av algoritm för att ta bort ekot} \\
 \todo{Figurer på xcorr plotten} \\
 
 \subsection{I/Q-demodulering}
-\todo{Motivera bandbreddsval} \\
 \todo{Ekvationer för I/Q} \\
 
 \section{Resultat}
