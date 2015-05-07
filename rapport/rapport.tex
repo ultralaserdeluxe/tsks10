@@ -1,4 +1,4 @@
-\documentclass[10pt,twocolumn]{article}
+\documentclass[10pt]{article}
 
 \usepackage[swedish]{babel}
 \usepackage[utf8]{inputenc}
@@ -7,6 +7,8 @@
 \usepackage{pdfpages}
 \usepackage{mcode}
 \usepackage{appendix}
+\usepackage[margin={2.5cm,2.5cm}]{geometry}
+\usepackage{multicol}
 
 \raggedbottom
 \sloppy
@@ -21,18 +23,14 @@
 
 \begin{document}
 
-% Försättsblad
-\begin{figure}
-  \includepdf{tsks10-forsattsblad.pdf}
-\end{figure}
-
 % Framsida
 \maketitle
 
 \clearpage
 
 % Brödtext
-\section{Inledning}
+\begin{multicols}{2}
+\section{Inledning} \label{inledning}
 
 Målet med den här laborationen var att demodulera en smalbandig I/Q-modulerad signal skickad från en tänkt radiostation och lyssna på dess innehåll. Signalens innehåll består av musikaliska melodier, ordspråk och vitt brus. En del av uppgiften var att identifiera ordspråken. Förutom demodulering skulle även signalens bärfrekvens bestämmas samt ekoeffekter tas hänsyn till. Resultatet av laborationen blev kända värden på signalens bärfrekvens, ekotidsfördröjning samt en användbar signal där ordspråken kunde höras.
 
@@ -49,7 +47,7 @@ Från labbhandledningen fås följande information om signalen:
 Laborationen kan delas in i tre deluppgifter, bestämming av bärfrekvens samt filtrering i smalbandet, bestämning av ekots tidsfördröjning samt filtrering av detta och slutligen I/Q-demodulering. MATLAB användes som verktyg för att behandla signalen.
 
 \subsection{Bärfrekvens och filtrering}
-Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen $y(t)$. Figur \todo{ref amplitudspektrum} visar amplitudspektrumet $|Y(f)|$. Ur figuren fås att det finns innehåll i närheten av tre olika bärfrekvenser. De frekvenser som matchar kritieriet att vara en multipel av 19 kHz är våra möjliga bärfrekvenser.
+Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen $y(t)$. Figur \ref{amplitudspektrum} visar amplitudspektrumet $|Y(f)|$. Ur figuren fås att det finns innehåll i närheten av tre olika bärfrekvenser. De frekvenser som matchar kritieriet att vara en multipel av 19 kHz är våra möjliga bärfrekvenser.
 
 \begin{itemize}
 \item Signal $y_1$ med $f_{c1}=38$ kHz
@@ -59,16 +57,13 @@ Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen 
 
 Signalerna på de olika frekvenserna filtreras ut med hjälp av ett bandpassfilter med övre respektive undre gräns $f_{ci} - B/2$ och $f_{ci} + B/2$ där $i = 1,2,3$. Då vi vet att signalen ska innehålla hörbart ljud väljs bandbredden $B=20000$ Hz.
 
-Figure \todo{ref tiddomän} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
 
-\todo{Figurer på fft och filtrerade signaler} \\
-\todo{Beskriv hur rätt signal valdes} \\
+Figure \ref{signaler} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
 
 \subsection{Hantering av eko}
-För att få bort ekoeffekterna i signalen måste vi först veta ekots tidsfördröjning. Detta görs genom en autokorrelation på signalen. För att få ett tydligare resulatat används $y_2$ som bara innehåller brus
+För att få bort ekoeffekterna i signalen måste vi först veta ekots tidsfördröjning. Detta görs genom en autokorrelation på signalen. Signalen $y_2$ som bara innehåller brus används då denna typ av vågform ger ett tydligare resultat enligt kursboken. I figur \ref{xcorr} syns huvudtoppen vid tiden $t = 0$ och sidotoppen vid $t = 0.430$, alltså är ekots tidsfördröjning $\tau = \tau_{1} - \tau_{2} = 0.430$ sekunder.
 
-\todo{xcorr och beskrivning av algoritm för att ta bort ekot} \\
-\todo{Figurer på xcorr plotten} \\
+Med en känd tidsfördröjning samt amplitud på ekot från avsnitt \ref{inledning} kan nu den ekofria signalen tas $y_{3}^{'}$ fram från $y_3$. Detta görs genom $y_{3}^{'}(t) = y_{3}(t) - 0.9*y_{3}^{'}(t - \tau)$ för $t > \tau$. Då det är uppenbart att det inte finns något eko för $0 \leq t \leq \tau$ gäller $y_{3}^{'}(t) = y_{3}(t)$ i det intervallet.
 
 \subsection{I/Q-demodulering}
 \todo{Ekvationer för I/Q} \\
@@ -83,13 +78,39 @@ Den sökta informationen är:
 \item Ordspråket i I-signalen är ``även den mest skröpliga mussla kan innehålla en pärla''.
 \item Ordspråket i Q-signalen är ``skrattar bäst som skrattar sist''.
 \end{itemize}
+\end{multicols}
+
+\clearpage
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.55]{figurer/amplitudspektrum.eps}
+  \caption{Amplitudspektrum}
+  \label{amplitudspektrum}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.55]{figurer/signaler.eps}
+  \caption{Radiostationens tre signaler i tidsdomänen}
+  \label{signaler}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.55]{figurer/xcorr.eps}
+  \caption{Autokorrelation för att bestämma ekots tidsfördröjning}
+  \label{xcorr}
+\end{figure}
 
 \clearpage
 
 % Programkod
+\begin{multicols}{2}
 \begin{appendices}
 \section{Programkod}
 \lstinputlisting[breaklines=true]{../matlab/lab.m}
 \end{appendices}
+\end{multicols}
 
 \end{document}
