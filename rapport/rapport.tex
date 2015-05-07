@@ -37,16 +37,17 @@ Målet med den här laborationen var att demodulera en smalbandig I/Q-modulerad 
 Från labbhandledningen fås följande information om signalen:
 
 \begin{itemize}
-\item Radiostationen sänder ut signalen $x(t) = x_I(t)cos(2\pi f_ct) - x_Q(t)cos(2\pi f_ct) + z(t)$, där $f_c$ är signalens bärfrekvens och $z(t)$ är andra signaler ämnade åt någon annan. $x_I$ och $x_Q$ är de intressanta signalerna med relevant innehåll.
+\item Radiostationen sänder ut signalen $x(t) = x_I(t)cos(2\pi f_ct) - x_Q(t)sin(2\pi f_ct) + z(t)$, där $f_c$ är signalens bärfrekvens och $z(t)$ är andra signaler ämnade åt någon annan. $x_I$ och $x_Q$ är de intressanta signalerna med relevant innehåll.
 \item På grund av ekoeffekter i radioutbredningsmiljön så tar vi emot signalen $y(t) = x(t - \tau_1) + 0.9x(t - \tau_2)$. 
 \item Bärfrekvensen $f_c$ är en multipel av 19 kHz.
+\item Den mottagna signalen lågpassfiltreras och samplas sedan med en frekvens på $f_s = 400000$ Hz.
 \end{itemize}
 
 \section{Metod}
 
 Laborationen kan delas in i tre deluppgifter, bestämming av bärfrekvens samt filtrering i smalbandet, bestämning av ekots tidsfördröjning samt filtrering av detta och slutligen I/Q-demodulering. MATLAB användes som verktyg för att behandla signalen.
 
-\subsection{Bärfrekvens och filtrering}
+\subsection{Bärfrekvens och filtrering} \label{filtrering}
 Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen $y(t)$. Figur \ref{amplitudspektrum} visar amplitudspektrumet $|Y(f)|$. Ur figuren fås att det finns innehåll i närheten av tre olika bärfrekvenser. De frekvenser som matchar kritieriet att vara en multipel av 19 kHz är våra möjliga bärfrekvenser.
 
 \begin{itemize}
@@ -60,13 +61,15 @@ Signalerna på de olika frekvenserna filtreras ut med hjälp av ett bandpassfilt
 
 Figure \ref{signaler} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
 
-\subsection{Hantering av eko}
+\subsection{Hantering av eko} \label{eko}
 För att få bort ekoeffekterna i signalen måste vi först veta ekots tidsfördröjning. Detta görs genom en autokorrelation på signalen. Signalen $y_2$ som bara innehåller brus används då denna typ av vågform ger ett tydligare resultat enligt kursboken. I figur \ref{xcorr} syns huvudtoppen vid tiden $t = 0$ och sidotoppen vid $t = 0.430$, alltså är ekots tidsfördröjning $\tau = \tau_{1} - \tau_{2} = 0.430$ sekunder.
 
-Med en känd tidsfördröjning samt amplitud på ekot från avsnitt \ref{inledning} kan nu den ekofria signalen tas $y_{3}^{'}$ fram från $y_3$. Detta görs genom $y_{3}^{'}(t) = y_{3}(t) - 0.9*y_{3}^{'}(t - \tau)$ för $t > \tau$. Då det är uppenbart att det inte finns något eko för $0 \leq t \leq \tau$ gäller $y_{3}^{'}(t) = y_{3}(t)$ i det intervallet.
+Med en känd tidsfördröjning samt amplitud på ekot från avsnitt \ref{inledning} kan nu den ekofria signalen tas $y_{3}^{'}$ fram från $y_3$. Detta görs genom $y_{3}^{'}(t) = y_{3}(t) - 0.9*y_{3}^{'}(t - \tau)$ för alla $t > \tau$. Då det är uppenbart att det inte finns något eko för $0 \leq t \leq \tau$ gäller $y_{3}^{'}(t) = y_{3}(t)$ i det intervallet.
+
+Implementationen i MATLAB utför ekodämpningen på ett helt block av sampel i taget istället för en och en. Detta är för att få en snabbare exekveringstid, i övrigt är det samma algoritm. Blockets storlek är antalet sampel som motsvarar $\tau = 0.430$ sekunder, det vill säga $n = f_s\tau = 172000$ sampel.
 
 \subsection{I/Q-demodulering}
-\todo{Ekvationer för I/Q} \\
+Nu återstår endast demodulering innan signalen kan spelas upp som hörbart ljud. Från kursboken har vi givet $x_I(t) = \mathcal{H}_{B/2}^{LP}\{2x(t)cos(2\pi f_ct)\}$ och $x_Q(t) = -\mathcal{H}_{B/2}^{LP}\{2x(t)sin(2\pi f_ct)\}$, där i vårt fall $x(t) = y_{3}^{'}(t)$ enligt avsnitt \ref{eko}, $f_c = f_{c3} = 114000$ Hz och $B = 20000$ Hz enligt avsnitt \ref{filtrering}. Basbandssignalerna $x_I$ och $x_Q$ innehåller nu hörbart ljud som kan spelas upp i valfri mediaspelare!
 
 \section{Resultat}
 
