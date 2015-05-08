@@ -1,3 +1,5 @@
+
+
 \documentclass[10pt]{article}
 
 \usepackage[swedish]{babel}
@@ -19,7 +21,7 @@
 
 \author{Alexander Yngve\\aleyn573, 930320-6651}
 
-\date{28 april, 2015}
+\date{8 maj, 2015}
 
 \begin{document}
 
@@ -59,14 +61,14 @@ Bärfrekvensen $f_c$ fås med hjälp av fouriertransformen $Y(f)$ till signalen 
 Signalerna på de olika frekvenserna filtreras ut med hjälp av ett bandpassfilter med övre respektive undre gräns $f_{ci} - B/2$ och $f_{ci} + B/2$ där $i = 1,2,3$. Då vi vet att signalen ska innehålla hörbart ljud väljs bandbredden $B=20000$ Hz.
 
 
-Figure \ref{signaler} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
+Figur \ref{signaler} visar de filtrerade smalbandssignalerna i tidsdomänen. Signalerna $y_1$ och $y_2$ med bärfrekvens $f_{c1}$ och $f_{c2}$ ser ut att vara rent brus eller snarlikt. Signalen $y_3$ med bärfrekvens $f_{c3}$ ser däremot ut att ha korrekt innehåll, två delar som skulle kunna vara toner och tal och en avslutande del brus.
 
 \subsection{Hantering av eko} \label{eko}
 För att få bort ekoeffekterna i signalen måste vi först veta ekots tidsfördröjning. Detta görs genom en autokorrelation på signalen. Signalen $y_2$ som bara innehåller brus används då denna typ av vågform ger ett tydligare resultat enligt kursboken. I figur \ref{xcorr} syns huvudtoppen vid tiden $t = 0$ och sidotoppen vid $t = 0.430$, alltså är ekots tidsfördröjning $\tau = \tau_{1} - \tau_{2} = 0.430$ sekunder.
 
-Med en känd tidsfördröjning samt amplitud på ekot från avsnitt \ref{inledning} kan nu den ekofria signalen tas $y_{3}^{'}$ fram från $y_3$. Detta görs genom $y_{3}^{'}(t) = y_{3}(t) - 0.9*y_{3}^{'}(t - \tau)$ för alla $t > \tau$. Då det är uppenbart att det inte finns något eko för $0 \leq t \leq \tau$ gäller $y_{3}^{'}(t) = y_{3}(t)$ i det intervallet.
+Med en känd tidsfördröjning samt amplitud på ekot från avsnitt \ref{inledning} kan nu den ekofria signalen $y_{3}^{'}$ tas fram från $y_3$. Detta görs genom $y_{3}^{'}(t) = y_{3}(t) - 0.9y_{3}^{'}(t - \tau)$ för alla $t > \tau$. Då det är uppenbart att det inte finns något eko för $0 \leq t \leq \tau$ gäller $y_{3}^{'}(t) = y_{3}(t)$ i det intervallet.
 
-Implementationen i MATLAB utför ekodämpningen på ett helt block av sampel i taget istället för en och en. Detta är för att få en snabbare exekveringstid, i övrigt är det samma algoritm. Blockets storlek är antalet sampel som motsvarar $\tau = 0.430$ sekunder, det vill säga $n = f_s\tau = 172000$ sampel.
+Implementationen i MATLAB utför ekodämpningen på ett helt block av sampel i taget istället för en och en. Detta för att få en snabbare exekveringstid, i övrigt är det samma algoritm. Blockets storlek är antalet sampel som motsvarar $\tau = 0.430$ sekunder, det vill säga $f_s\tau = 172000$ sampel.
 
 \subsection{I/Q-demodulering}
 Nu återstår endast demodulering innan signalen kan spelas upp som hörbart ljud. Från kursboken har vi givet $x_I(t) = \mathcal{H}_{B/2}^{LP}\{2x(t)cos(2\pi f_ct)\}$ och $x_Q(t) = -\mathcal{H}_{B/2}^{LP}\{2x(t)sin(2\pi f_ct)\}$, där i vårt fall $x(t) = y_{3}^{'}(t)$ enligt avsnitt \ref{eko}, $f_c = f_{c3} = 114000$ Hz och $B = 20000$ Hz enligt avsnitt \ref{filtrering}. Basbandssignalerna $x_I$ och $x_Q$ innehåller nu hörbart ljud som kan spelas upp i valfri mediaspelare!
@@ -78,8 +80,8 @@ Den sökta informationen är:
 \begin{itemize}
 \item Bärfrekvensen för nyttosignalen är $f_c = 114000$ Hz.
 \item Differensen $\tau_{2} - \tau_{1} = 0.430$ s.
-\item Ordspråket i I-signalen är ``även den mest skröpliga mussla kan innehålla en pärla''.
-\item Ordspråket i Q-signalen är ``skrattar bäst som skrattar sist''.
+\item Ordspråket i I-signalen är ''även den mest skröpliga mussla kan innehålla en pärla''.
+\item Ordspråket i Q-signalen är ''skrattar bäst som skrattar sist''.
 \end{itemize}
 \end{multicols}
 
